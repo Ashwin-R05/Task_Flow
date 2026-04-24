@@ -97,6 +97,55 @@ const deleteTask = async (req, res) => {
     }
 };
 
+// @desc    Update a task (title, description, assignedTo)
+// @route   PUT /api/tasks/:id
+const updateTask = async (req, res) => {
+    try {
+        const task = await Task.findById(req.params.id);
+
+        if (!task) {
+            return res.status(404).json({ message: 'Task not found.' });
+        }
+
+        // Ensure user can only edit tasks within their organization
+        if (task.organization !== req.user.organization) {
+            return res.status(403).json({ message: 'Access denied. Task belongs to another organization.' });
+        }
+
+        const { title, description, assignedTo } = req.body;
+
+        if (title !== undefined) {
+            if (!title.trim()) {
+                return res.status(400).json({ message: 'Task title cannot be empty.' });
+            }
+            task.title = title.trim();
+        }
+
+        if (description !== undefined) {
+            task.description = description.trim();
+        }
+
+        if (assignedTo !== undefined) {
+            if (assignedTo) {
+                const assignee = await User.findById(assignedTo);
+                if (!assignee || assignee.organization !== req.user.organization) {
+                    return res.status(400).json({ message: 'Cannot assign to a user outside your organization.' });
+                }
+            }
+            task.assignedTo = assignedTo || null;
+        }
+
+        await task.save();
+        await task.populate('createdBy', 'name email');
+        await task.populate('assignedTo', 'name email');
+
+        res.json(task);
+    } catch (error) {
+        console.error('Update Task Error:', error.message);
+        res.status(500).json({ message: 'Server error while updating task.' });
+    }
+};
+
 // @desc    Toggle task status (pending ↔ completed)
 // @route   PUT /api/tasks/:id/toggle
 const toggleTask = async (req, res) => {
@@ -126,4 +175,4 @@ const toggleTask = async (req, res) => {
     }
 };
 
-module.exports = { getTasks, createTask, deleteTask, toggleTask };
+module.exports = { getTasks, createTask, deleteTask, updateTask, toggleTask };

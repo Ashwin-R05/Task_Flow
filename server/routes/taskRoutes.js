@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authMiddleware = require('../middleware/auth');
-const { getTasks, createTask, deleteTask, toggleTask } = require('../controllers/taskController');
+const { getTasks, createTask, deleteTask, updateTask, toggleTask } = require('../controllers/taskController');
 
 // All task routes are protected by JWT authentication
 router.use(authMiddleware);
@@ -14,6 +14,9 @@ router.post('/', createTask);
 
 // DELETE /api/tasks/:id    — Delete a task
 router.delete('/:id', deleteTask);
+
+// PUT    /api/tasks/:id    — Update a task
+router.put('/:id', updateTask);
 
 // PUT    /api/tasks/:id/toggle — Toggle task status
 router.put('/:id/toggle', toggleTask);

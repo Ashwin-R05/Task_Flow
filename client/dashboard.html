@@ -58,6 +58,35 @@
             </div>
         </div>
     </div>
+    <!-- Edit Task Modal -->
+    <div class="modal-backdrop" id="editModal">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h3>✏️ Edit Task</h3>
+                <button class="modal-close" onclick="closeEditModal()">✕</button>
+            </div>
+            <form onsubmit="handleEditTask(event)">
+                <input type="hidden" id="editTaskId">
+                <div class="field">
+                    <label for="editTaskTitle">Title</label>
+                    <input type="text" id="editTaskTitle" placeholder="Task title..." required>
+                </div>
+                <div class="field">
+                    <label for="editTaskDesc">Description</label>
+                    <input type="text" id="editTaskDesc" placeholder="Description (optional)">
+                </div>
+                <div class="field">
+                    <select id="editTaskAssignTo" style="display:none">
+                        <option value="">Assign to...</option>
+                    </select>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-cancel" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="btn btn-save">💾 Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
     <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">🌙</button>
 
     <script>

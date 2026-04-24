@@ -134,6 +134,7 @@ function taskCard(t) {
             </div>
         </div>
         ${canManage ? `<div class="t-actions">
+            <button class="btn btn-sm btn-edit" onclick="openEditModal('${t._id}','${esc(t.title).replace(/'/g, "\\'").replace(/"/g, '&quot;')}','${esc(t.description || '').replace(/'/g, "\\'").replace(/"/g, '&quot;')}','${toId}')">✏️</button>
             <button class="btn btn-sm btn-green" onclick="toggleTask('${t._id}')">${done ? '↩ Undo' : '✓ Done'}</button>
             <button class="btn btn-sm btn-red" onclick="deleteTask('${t._id}')">🗑</button>
         </div>` : ''}
@@ -184,6 +185,64 @@ async function deleteTask(id) {
         }
     } catch (e) { console.error(e); }
 }
+
+// ── Edit Task ──
+function openEditModal(id, title, desc, assignedToId) {
+    document.getElementById('editTaskId').value = id;
+    document.getElementById('editTaskTitle').value = title.replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+    document.getElementById('editTaskDesc').value = desc.replace(/&quot;/g, '"').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>');
+
+    // Populate assignee dropdown with same options as create form
+    const editAssign = document.getElementById('editTaskAssignTo');
+    const createAssign = document.getElementById('taskAssignTo');
+    if (user.role === 'admin' && createAssign.style.display !== 'none') {
+        editAssign.style.display = 'block';
+        editAssign.innerHTML = createAssign.innerHTML;
+        editAssign.value = assignedToId || '';
+    } else {
+        editAssign.style.display = 'none';
+    }
+
+    document.getElementById('editModal').classList.add('show');
+    document.getElementById('editTaskTitle').focus();
+}
+
+function closeEditModal() {
+    document.getElementById('editModal').classList.remove('show');
+}
+
+async function handleEditTask(e) {
+    e.preventDefault();
+    const id = document.getElementById('editTaskId').value;
+    const title = document.getElementById('editTaskTitle').value.trim();
+    const description = document.getElementById('editTaskDesc').value.trim();
+    const assignedTo = document.getElementById('editTaskAssignTo').value || null;
+
+    if (!title) return;
+
+    try {
+        const body = { title, description };
+        if (user.role === 'admin') body.assignedTo = assignedTo;
+
+        const res = await apiRequest(`${API_TASKS}/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(body)
+        });
+        if (!res) return;
+        const data = await res.json();
+        if (!res.ok) { alert(data.message); return; }
+        closeEditModal();
+        loadTasks();
+    } catch (e) { console.error(e); alert('Failed to update task.'); }
+}
+
+// Close modal when clicking backdrop
+document.addEventListener('click', (e) => {
+    if (e.target.id === 'editModal') closeEditModal();
+});
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeEditModal();
+});
 
 function handleLogout() { localStorage.clear(); window.location.href = 'login.html'; }
 

@@ -298,3 +298,55 @@ body {
     box-shadow: 0 2px 12px rgba(0,0,0,.15);
 }
 .theme-toggle:hover { transform: scale(1.1); border-color: var(--purple); }
+
+/* ────────── EDIT BUTTON ────────── */
+.btn-edit { background: var(--amber-dim); color: var(--amber); }
+.btn-edit:hover { background: var(--amber); color: #fff; }
+
+/* ────────── EDIT MODAL ────────── */
+.modal-backdrop {
+    display: none; position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(4px);
+    align-items: center; justify-content: center; padding: 1.5rem;
+}
+.modal-backdrop.show { display: flex; animation: fade .2s var(--ease); }
+
+.modal-box {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 1.75rem;
+    width: 100%; max-width: 460px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: up .3s var(--ease);
+}
+
+.modal-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 1.25rem;
+}
+.modal-header h3 { font-size: 1rem; font-weight: 700; color: var(--text); }
+.modal-close {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: var(--bg-hover); border: 1px solid var(--border);
+    color: var(--text-dim); font-size: .85rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all .2s var(--ease);
+}
+.modal-close:hover { background: var(--red-dim); color: var(--red); border-color: var(--red); }
+
+.modal-box .field { margin-bottom: 1rem; }
+
+.modal-actions {
+    display: flex; gap: .6rem; justify-content: flex-end;
+    margin-top: 1.25rem; padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
+.btn-cancel {
+    background: var(--bg-hover); color: var(--text-dim);
+    border: 1px solid var(--border);
+}
+.btn-cancel:hover { color: var(--text); border-color: var(--text-muted); }
+.btn-save { background: var(--purple); color: #fff; }
+.btn-save:hover { opacity: .9; transform: translateY(-1px); }
+
