@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Multi-Tenant Task Management System - Login">
+    <title>TaskFlow — Login</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark';</script>
+    <div class="auth-wrap">
+        <div class="auth-box">
+            <div class="logo">
+                <h1>⚡ TaskFlow</h1>
+                <p>Multi-Tenant Task Management</p>
+            </div>
+
+            <div class="tabs">
+                <button class="tab on" id="loginTab" onclick="switchTab('login')">Login</button>
+                <button class="tab" id="registerTab" onclick="switchTab('register')">Register</button>
+            </div>
+
+            <div class="msg" id="alertBox"><span id="alertMsg"></span></div>
+
+            <!-- Login -->
+            <form class="form on" id="loginForm" onsubmit="handleLogin(event)">
+                <div class="field">
+                    <label for="loginEmail">Email</label>
+                    <input type="email" id="loginEmail" placeholder="you@example.com" required>
+                </div>
+                <div class="field">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword" placeholder="Enter password" required>
+                </div>
+                <button type="submit" class="btn btn-main" id="loginBtn">Sign In</button>
+            </form>
+
+            <!-- Register -->
+            <form class="form" id="registerForm" onsubmit="handleRegister(event)">
+                <div class="field">
+                    <label for="regName">Full Name</label>
+                    <input type="text" id="regName" placeholder="John Doe" required>
+                </div>
+                <div class="field">
+                    <label for="regEmail">Email</label>
+                    <input type="email" id="regEmail" placeholder="you@example.com" required>
+                </div>
+                <div class="field">
+                    <label for="regPassword">Password</label>
+                    <input type="password" id="regPassword" placeholder="Min 6 characters" required minlength="6">
+                </div>
+                <div class="field">
+                    <label for="regOrganization">Organization</label>
+                    <input type="text" id="regOrganization" placeholder="e.g., TechCorp" required>
+                </div>
+                <div class="field">
+                    <label for="regRole">Role</label>
+                    <select id="regRole">
+                        <option value="user">User</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-main" id="registerBtn">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">🌙</button>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+            html.dataset.theme = next;
+            localStorage.setItem('theme', next);
+            document.getElementById('themeBtn').textContent = next === 'dark' ? '🌙' : '☀️';
+        }
+        document.getElementById('themeBtn').textContent = (localStorage.getItem('theme') || 'dark') === 'dark' ? '🌙' : '☀️';
+    </script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

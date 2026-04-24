@@ -1,0 +1,25 @@
+{
+  "name": "multi-tenant-task-manager",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "multi-tenant",
+    "task-manager",
+    "express",
+    "mongodb"
+  ],
+  "author": "",
+  "license": "ISC",
+  "description": "Multi-Tenant Task Management System with RBAC",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^4.22.1",
+    "jsonwebtoken": "^9.0.3",
+    "mongoose": "^9.5.0"
+  }
+}

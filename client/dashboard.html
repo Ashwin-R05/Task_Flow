@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="TaskFlow Dashboard">
+    <title>TaskFlow — Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <script>document.documentElement.dataset.theme = localStorage.getItem('theme') || 'dark';</script>
+    <div class="dash">
+        <nav class="topbar">
+            <div class="brand">⚡ TaskFlow</div>
+            <div class="meta">
+                <span id="userName" style="font-weight:600;color:var(--text)"></span>
+                <span class="chip chip-org" id="userOrg"></span>
+                <span class="chip chip-role" id="userRole"></span>
+                <button class="btn btn-out" onclick="handleLogout()">Logout</button>
+            </div>
+        </nav>
+
+        <div class="content">
+            <div class="stats">
+                <div class="stat"><div class="num" id="totalTasks">0</div><div class="lbl">Total</div></div>
+                <div class="stat"><div class="num" id="pendingTasks">0</div><div class="lbl">Pending</div></div>
+                <div class="stat"><div class="num" id="completedTasks">0</div><div class="lbl">Completed</div></div>
+            </div>
+
+            <div class="team-panel" id="teamSection" style="display:none">
+                <h3>👥 Team Members</h3>
+                <div class="team-row" id="teamList"></div>
+            </div>
+
+            <div class="fbar" id="filterBanner" style="display:none">
+                <span id="filterText"></span>
+                <button class="btn btn-clear" onclick="clearFilter()">✕ Show All</button>
+            </div>
+
+            <div class="create-box">
+                <h3>✨ New Task</h3>
+                <form class="create-row" id="taskForm" onsubmit="handleCreateTask(event)">
+                    <input type="text" id="taskTitle" placeholder="Task title..." required>
+                    <input type="text" id="taskDesc" placeholder="Description (optional)">
+                    <select id="taskAssignTo" style="display:none">
+                        <option value="">Assign to...</option>
+                    </select>
+                    <button type="submit" class="btn btn-create">+ Add</button>
+                </form>
+            </div>
+
+            <h3 class="tasks-head" id="taskListHeading">All Tasks</h3>
+            <div class="tasks" id="taskList">
+                <div class="loading" id="loadingState">
+                    <div class="spin"></div>
+                    <p>Loading...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <button class="theme-toggle" id="themeBtn" onclick="toggleTheme()">🌙</button>
+
+    <script>
+        function toggleTheme() {
+            const html = document.documentElement;
+            const next = html.dataset.theme === 'dark' ? 'light' : 'dark';
+            html.dataset.theme = next;
+            localStorage.setItem('theme', next);
+            document.getElementById('themeBtn').textContent = next === 'dark' ? '🌙' : '☀️';
+        }
+        document.getElementById('themeBtn').textContent = (localStorage.getItem('theme') || 'dark') === 'dark' ? '🌙' : '☀️';
+    </script>
+    <script src="js/tasks.js"></script>
+</body>
+</html>
